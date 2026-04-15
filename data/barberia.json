@@ -1,0 +1,10 @@
+{
+    "citas": [
+        {
+            "cliente": "Jaime Torres",
+            "fecha": "2026-04-30",
+            "hora": "16:00",
+            "servicio": "Corte"
+        }
+    ]
+}
