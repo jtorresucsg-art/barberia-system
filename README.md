@@ -63,3 +63,4 @@ barberia-system/
 ├── docs/
 │   └── adr/
 └── README.md
+# prueba CI
