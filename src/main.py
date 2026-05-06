@@ -1,6 +1,7 @@
 from .persistencia import PersistenciaJSON
 from .citas import GestionCitas
 
+
 class SistemaCitas:
     def __init__(self):
         self.persistencia = PersistenciaJSON("data/barberia.json")
@@ -27,7 +28,10 @@ class SistemaCitas:
 
             elif op == "2":
                 for c in self.citas.listar():
-                    print(f"{c['fecha']} {c['hora']} - {c['cliente']} ({c['servicio']})")
+                    print(
+                        f"{c['fecha']} {c['hora']} - "
+                        f"{c['cliente']} ({c['servicio']})"
+                    )
 
             elif op == "3":
                 cliente = input("Cliente: ")
@@ -40,6 +44,7 @@ class SistemaCitas:
 
             else:
                 print("Opción inválida")
+
 
 if __name__ == "__main__":
     SistemaCitas().ejecutar()

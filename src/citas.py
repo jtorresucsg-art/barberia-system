@@ -1,5 +1,6 @@
 from datetime import datetime
 
+
 class GestionCitas:
     def __init__(self, persistencia):
         self.persistencia = persistencia
@@ -21,12 +22,14 @@ class GestionCitas:
             if c["fecha"] == fecha and c["hora"] == hora:
                 return False, "Horario ya ocupado"
 
-        datos["citas"].append({
-            "cliente": cliente,
-            "fecha": fecha,
-            "hora": hora,
-            "servicio": servicio
-        })
+        datos["citas"].append(
+            {
+                "cliente": cliente,
+                "fecha": fecha,
+                "hora": hora,
+                "servicio": servicio,
+            }
+        )
 
         self.persistencia.guardar(datos)
         return True, "Cita registrada correctamente"
@@ -34,15 +37,24 @@ class GestionCitas:
     def listar(self):
         return self.persistencia.cargar()["citas"]
 
-    def cancelar(self, cliente, fecha, hora):
-        datos = self.persistencia.cargar()
-        nuevas = [
-            c for c in datos["citas"]
-            if not (c["cliente"] == cliente and c["fecha"] == fecha and c["hora"] == hora)
-        ]
-        if len(nuevas) == len(datos["citas"]):
-            return False, "Cita no encontrada"
 
-        datos["citas"] = nuevas
-        self.persistencia.guardar(datos)
-        return True, "Cita cancelada"
+def cancelar(self, cliente, fecha, hora):
+    datos = self.persistencia.cargar()
+
+    nuevas_citas = [
+        cita
+        for cita in datos["citas"]
+        if not (
+            cita["cliente"] == cliente
+            and cita["fecha"] == fecha
+            and cita["hora"] == hora
+        )
+    ]
+
+    if len(nuevas_citas) == len(datos["citas"]):
+        return False, "Cita no encontrada"
+
+    datos["citas"] = nuevas_citas
+    self.persistencia.guardar(datos)
+
+    return True, "Cita cancelada correctamente"

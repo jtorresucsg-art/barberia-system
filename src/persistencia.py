@@ -1,6 +1,7 @@
 import json
 import os
 
+
 class PersistenciaJSON:
     def __init__(self, ruta):
         self.ruta = ruta
