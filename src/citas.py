@@ -1,6 +1,5 @@
 from datetime import datetime
 
-
 class GestionCitas:
     def __init__(self, persistencia):
         self.persistencia = persistencia
@@ -37,24 +36,22 @@ class GestionCitas:
     def listar(self):
         return self.persistencia.cargar()["citas"]
 
+    def cancelar(self, cliente, fecha, hora):
+        datos = self.persistencia.cargar()
 
-def cancelar(self, cliente, fecha, hora):
-    datos = self.persistencia.cargar()
+        nuevas_citas = [
+            cita for cita in datos["citas"]
+            if not (
+                cita["cliente"] == cliente
+                and cita["fecha"] == fecha
+                and cita["hora"] == hora
+            )
+        ]
 
-    nuevas_citas = [
-        cita
-        for cita in datos["citas"]
-        if not (
-            cita["cliente"] == cliente
-            and cita["fecha"] == fecha
-            and cita["hora"] == hora
-        )
-    ]
+        if len(nuevas_citas) == len(datos["citas"]):
+            return False, "Cita no encontrada"
 
-    if len(nuevas_citas) == len(datos["citas"]):
-        return False, "Cita no encontrada"
+        datos["citas"] = nuevas_citas
+        self.persistencia.guardar(datos)
 
-    datos["citas"] = nuevas_citas
-    self.persistencia.guardar(datos)
-
-    return True, "Cita cancelada correctamente"
+        return True, "Cita cancelada correctamente"
