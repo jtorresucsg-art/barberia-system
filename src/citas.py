@@ -1,6 +1,15 @@
+"""Módulo para gestionar citas de clientes."""
+
 from datetime import datetime
 
+
 class GestionCitas:
+    """
+    Clase que gestiona las citas de clientes.
+
+    Se encarga de registrar nuevas citas, cancelarlas y
+    mantener un listado actualizado de todas las reservas.
+    """
     def __init__(self, persistencia):
         self.persistencia = persistencia
 
@@ -12,6 +21,20 @@ class GestionCitas:
             return False
 
     def registrar(self, cliente, fecha, hora, servicio):
+        """
+        Registra una nueva cita en el sistema.
+
+        Parámetros:
+            cliente (str): Nombre del cliente.
+            fecha (str): Fecha de la cita en formato YYYY-MM-DD.
+            hora (str): Hora de la cita en formato HH:MM.
+            servicio (str): Servicio solicitado.
+
+        Retorna:
+            tuple: (bool, str) indicando si la cita fue registrada
+            correctamente y un mensaje descriptivo.
+        """
+
         if not self._fecha_valida(fecha, hora):
             return False, "Fecha u hora inválida"
 
@@ -40,7 +63,8 @@ class GestionCitas:
         datos = self.persistencia.cargar()
 
         nuevas_citas = [
-            cita for cita in datos["citas"]
+            cita
+            for cita in datos["citas"]
             if not (
                 cita["cliente"] == cliente
                 and cita["fecha"] == fecha
