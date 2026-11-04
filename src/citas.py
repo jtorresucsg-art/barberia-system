@@ -1,7 +1,15 @@
+"""Módulo para gestionar citas de clientes."""
+
 from datetime import datetime
 
 
 class GestionCitas:
+    """
+    Clase que gestiona las citas de clientes.
+
+    Se encarga de registrar nuevas citas, cancelarlas y
+    mantener un listado actualizado de todas las reservas.
+    """
     def __init__(self, persistencia):
         self.persistencia = persistencia
 
@@ -13,6 +21,20 @@ class GestionCitas:
             return False
 
     def registrar(self, cliente, fecha, hora, servicio):
+        """
+        Registra una nueva cita en el sistema.
+
+        Parámetros:
+            cliente (str): Nombre del cliente.
+            fecha (str): Fecha de la cita en formato YYYY-MM-DD.
+            hora (str): Hora de la cita en formato HH:MM.
+            servicio (str): Servicio solicitado.
+
+        Retorna:
+            tuple: (bool, str) indicando si la cita fue registrada
+            correctamente y un mensaje descriptivo.
+        """
+
         if not self._fecha_valida(fecha, hora):
             return False, "Fecha u hora inválida"
 
@@ -37,24 +59,23 @@ class GestionCitas:
     def listar(self):
         return self.persistencia.cargar()["citas"]
 
+    def cancelar(self, cliente, fecha, hora):
+        datos = self.persistencia.cargar()
 
-def cancelar(self, cliente, fecha, hora):
-    datos = self.persistencia.cargar()
+        nuevas_citas = [
+            cita
+            for cita in datos["citas"]
+            if not (
+                cita["cliente"] == cliente
+                and cita["fecha"] == fecha
+                and cita["hora"] == hora
+            )
+        ]
 
-    nuevas_citas = [
-        cita
-        for cita in datos["citas"]
-        if not (
-            cita["cliente"] == cliente
-            and cita["fecha"] == fecha
-            and cita["hora"] == hora
-        )
-    ]
+        if len(nuevas_citas) == len(datos["citas"]):
+            return False, "Cita no encontrada"
 
-    if len(nuevas_citas) == len(datos["citas"]):
-        return False, "Cita no encontrada"
+        datos["citas"] = nuevas_citas
+        self.persistencia.guardar(datos)
 
-    datos["citas"] = nuevas_citas
-    self.persistencia.guardar(datos)
-
-    return True, "Cita cancelada correctamente"
+        return True, "Cita cancelada correctamente"

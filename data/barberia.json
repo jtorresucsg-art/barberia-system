@@ -11,6 +11,12 @@
             "fecha": "2026-04-16",
             "hora": "10:00",
             "servicio": "Corte de barba"
+        },
+        {
+            "cliente": "Luis Armando",
+            "fecha": "2026-10-29",
+            "hora": "10:00",
+            "servicio": "Corte"
         }
     ]
 }
